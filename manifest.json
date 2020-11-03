@@ -1,0 +1,16 @@
+{
+    "name": "EPL PWA",
+    "short_name": "EPL PWA",
+    "description": "Aplikasi PWA English Premiere League",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "background_color": "#00897B",
+    "theme_color": "#3949AB",
+    "icons": [
+        {
+            "src": "icon.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
