@@ -81,6 +81,7 @@
           console.log("Tombol FAB di klik.");
           item.then(function (team) {
             saveForLater(team);
+            sendNotif(`${team.name} berhasil menjadi tim favorit anda!`);
           });
         };
       });

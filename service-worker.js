@@ -7,17 +7,17 @@ var urlsToCache = [
   "/informasijadwal.html",
   "/jadwal.html",
   "/service-worker.js",
-  "/pages/home.html",
-  "/pages/saved.html",
   "/css/materialize.css",
   "/css/materialize.min.css",
   "/js/materialize.js",
   "/js/materialize.min.js",
+  "/js/push.js",
   "/js/api.js",
   "/js/nav.js",
   "/js/idb.js",
   "/js/db.js",
-  "/icon.png"
+  "/icon.png",
+  "/manifest.json"
 ];
  
 self.addEventListener("install", function(event) {
@@ -62,5 +62,26 @@ self.addEventListener("activate", function(event) {
         })
       );
     })
+  );
+});
+
+self.addEventListener('push', function(event) {
+  var body;
+  if (event.data) {
+    body = event.data.text();
+  } else {
+    body = 'Push message no payload';
+  }
+  var options = {
+    body: body,
+    icon: 'img/notification.png',
+    vibrate: [100, 50, 100],
+    data: {
+      dateOfArrival: Date.now(),
+      primaryKey: 1
+    }
+  };
+  event.waitUntil(
+    self.registration.showNotification('Push Notification', options)
   );
 });
