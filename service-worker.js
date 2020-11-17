@@ -4,6 +4,7 @@ var urlsToCache = [
   "/nav.html",
   "/index.html",
   "/informasi.html",
+  "/informasijadwal.html",
   "/jadwal.html",
   "/service-worker.js",
   "/pages/home.html",

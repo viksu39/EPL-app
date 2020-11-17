@@ -5,7 +5,7 @@ var dbPromised = idb.open("football-app", 3, function(upgradeDb) {
   teamsObjectStore.createIndex("name", "name", { unique: false });
 
   var jadwalObjectStore = upgradeDb.createObjectStore("jadwals",{
-    keyPath: "match.utcDate"
+    keyPath: "match.id"
   });
   jadwalObjectStore.createIndex("utcDate", "utcDate", { unique: false });
 });
@@ -53,7 +53,35 @@ function getAll() {
     });
 }
 
-function getById(id) {
+function getAllJadwal() {
+  return new Promise(function(resolve, reject) {
+    dbPromised
+      .then(function(db) {
+        var tx = db.transaction("jadwals", "readonly");
+        var store = tx.objectStore("jadwals");
+        return store.getAll();
+      })
+      .then(function(jadwals) {
+        resolve(jadwals);
+      });
+  });
+}
+
+function getNobarById(id) {
+    return new Promise(function(resolve, reject) {
+      dbPromised
+        .then(function(db) {
+          var tx = db.transaction("jadwals", "readonly");
+          var store = tx.objectStore("jadwals");
+          return store.get(parseInt(id));
+        })
+        .then(function(jadwal) {
+          resolve(jadwal);
+        });
+    });
+  }
+
+  function getById(id) {
     return new Promise(function(resolve, reject) {
       dbPromised
         .then(function(db) {

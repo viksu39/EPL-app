@@ -51,6 +51,9 @@ document.addEventListener("DOMContentLoaded", function() {
             } else if (page === "saved") {
               document.getElementById("logo-container").innerHTML = "Tim Favorit";
               getSavedTeams();
+            } else if (page === "nobar") {
+              document.getElementById("logo-container").innerHTML = "Nobar";
+              getSavedJadwals();
             }
 
         if (this.status == 200) {

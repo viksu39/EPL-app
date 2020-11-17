@@ -43,7 +43,7 @@ function getKlasemen() {
                     `;
               });
               // Sisipkan komponen card ke dalam elemen dengan id #content
-              document.getElementById("klasemen").innerHTML = klasemenHTML;
+              document.getElementById("body-content").innerHTML = klasemenHTML;
             })
           }
         })
@@ -74,7 +74,7 @@ function getKlasemen() {
             `;
           });
           // Sisipkan komponen card ke dalam elemen dengan id #content
-          document.getElementById("klasemen").innerHTML = klasemenHTML;
+          document.getElementById("body-content").innerHTML = klasemenHTML;
       })
       .catch(error);
 }
@@ -330,7 +330,29 @@ function getJadwalById() {
                 <span class="card-title truncate white-text"><b>Head To Head</b></span>
               </div>
               <div class="card-content">
-              Test
+                <table>
+                  <tr>
+                    <th colspan="4">Jumlah Tanding: ${data.head2head.numberOfMatches}</th>
+                  </tr>
+                  <tr>
+                    <th colspan="4">Jumlah Goal: ${data.head2head.totalGoals}</th>
+                  </tr>
+                  <tr>
+                    <th>Team</th><th>Menang</th><th>Seri</th><th>Kalah</th>
+                  </tr>
+                  <tr>
+                    <td>${data.head2head.homeTeam.name}</td>
+                    <td>${data.head2head.homeTeam.wins}</td>
+                    <td>${data.head2head.homeTeam.draws}</td>
+                    <td>${data.head2head.homeTeam.losses}</td>
+                  </tr>
+                  <tr>
+                    <td>${data.head2head.awayTeam.name}</td>
+                    <td>${data.head2head.awayTeam.wins}</td>
+                    <td>${data.head2head.awayTeam.draws}</td>
+                    <td>${data.head2head.awayTeam.losses}</td>
+                  </tr>
+                </table>
               </div>
             </div>
             `;
@@ -439,6 +461,114 @@ function getSavedTeams() {
     });
     // Sisipkan komponen card ke dalam elemen dengan id #body-content
     document.getElementById("body-content").innerHTML = teamHTML;
+  });
+}
+
+function getSavedJadwals() {
+  getAllJadwal().then(function(jadwals) {
+    console.log(jadwals);
+    // Menyusun komponen card artikel secara dinamis
+    var jadwalHTML = "";
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+    jadwals.forEach(function(jadwal) {
+      var jadwalID = new Date(jadwal.match.utcDate);
+      jadwalHTML += `
+        <div class="card">
+        <a href="./informasijadwal.html?id=${jadwal.match.id}&saved=TRUE">
+        <div class="card-content teal">
+          <span class="card-title truncate teal">${jadwal.match.competition.name}</span>
+        </div>
+        <div class="card-content">
+          <table>
+          <tr>
+            <td style="text-align:center" colspan="2">${jadwal.match.stage} ${jadwal.match.group}</td>
+          </tr>
+          <tr>
+            <td style="text-align:center;">HOME</td>
+            <td style="text-align:center;">AWAY</td>
+          </tr>
+          <tr>
+            <td style="text-align:center;">${jadwal.match.homeTeam.name}</td>
+            <td style="text-align:center;">${jadwal.match.awayTeam.name}</td>
+          </tr>
+          <tr>
+            <td style="text-align:center" colspan="2">${jadwalID.toLocaleDateString('id-ID',options)} WIB</td>
+          </tr>
+          </table>
+        </div>
+        </a>
+      </div>
+        `;
+    });
+    // Sisipkan komponen card ke dalam elemen dengan id #body-content
+    document.getElementById("body-content").innerHTML = jadwalHTML;
+  });
+}
+
+function getSavedJadwalById() {
+  var urlParams = new URLSearchParams(window.location.search);
+  var idParam = urlParams.get("id");
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+  
+  getNobarById(idParam).then(function(jadwal) {
+    var jadwalID = new Date(jadwal.match.utcDate);
+            var jadwalHTML = `
+            <div class="card">
+            <div class="card-content teal">
+              <span class="card-title truncate white-text"><b>${jadwal.match.competition.name}</b></span>
+            </div>
+            <div class="card-content">
+                <table>
+                <tr>
+                  <td style="text-align:center" colspan="2">${jadwal.match.stage} ${jadwal.match.group}</td>
+                </tr>
+                <tr>
+                  <td style="text-align:center;">HOME</td>
+                  <td style="text-align:center;">AWAY</td>
+                </tr>
+                <tr>
+                  <td style="text-align:center;">${jadwal.match.homeTeam.name}</td>
+                  <td style="text-align:center;">${jadwal.match.awayTeam.name}</td>
+                </tr>
+                <tr>
+                  <td style="text-align:center" colspan="2">${jadwalID.toLocaleDateString('id-ID',options)} WIB</td>
+                </tr>
+                </table>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-content teal">
+                <span class="card-title truncate white-text"><b>Head To Head</b></span>
+              </div>
+              <div class="card-content">
+                <table>
+                  <tr>
+                    <th colspan="4">Jumlah Tanding: ${jadwal.head2head.numberOfMatches}</th>
+                  </tr>
+                  <tr>
+                    <th colspan="4">Jumlah Goal: ${jadwal.head2head.totalGoals}</th>
+                  </tr>
+                  <tr>
+                    <th>Team</th><th>Menang</th><th>Seri</th><th>Kalah</th>
+                  </tr>
+                  <tr>
+                    <td>${jadwal.head2head.homeTeam.name}</td>
+                    <td>${jadwal.head2head.homeTeam.wins}</td>
+                    <td>${jadwal.head2head.homeTeam.draws}</td>
+                    <td>${jadwal.head2head.homeTeam.losses}</td>
+                  </tr>
+                  <tr>
+                    <td>${jadwal.head2head.awayTeam.name}</td>
+                    <td>${jadwal.head2head.awayTeam.wins}</td>
+                    <td>${jadwal.head2head.awayTeam.draws}</td>
+                    <td>${jadwal.head2head.awayTeam.losses}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            `;
+    // Sisipkan komponen card ke dalam elemen dengan id #content
+    document.getElementById("body-content").innerHTML = jadwalHTML;
   });
 }
 
