@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Jadwal Team</title>
+    <title>Informasi Pertandingan</title>
     <meta name="description" content="My first PWA" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="css/materialize.min.css" />
@@ -17,11 +17,11 @@
     <!-- Navigasi -->
     <nav class="indigo darken-1" role="navigation">
       <div class="nav-wrapper container">
-        <a href="#" class="brand-logo" id="logo-container">Info Jadwal</a>
+        <a href="#" class="brand-logo" id="logo-container">Info Match</a>
         <a
-          href="./informasi.html"
+          href="./"
           class="sidenav-trigger"
-          id="kembali-info"
+          id="kembali"
           data-target="nav-mobile"
         >
           <i class="material-icons">arrow_back</i>
@@ -32,6 +32,11 @@
     </nav>
     <!-- Akhir Navigasi -->
     <div class="container" id="body-content"></div>
+    <div class="fixed-action-btn">
+      <a class="btn-floating btn-large red" id="save">
+        <i class="large material-icons">save</i>
+      </a>
+    </div>
     <script
       type="text/javascript"
       src="https://unpkg.com/snarkdown@1.0.2/dist/snarkdown.umd.js"
@@ -59,15 +64,25 @@
 
       document.addEventListener("DOMContentLoaded", function () {
         var urlParams = new URLSearchParams(window.location.search);
-
         var isFromSaved = urlParams.get("saved");
-
-        if (isFromSaved) {
-          document.getElementById("kembali-info").href =
-            "./informasi.html?id=" + urlParams.get("id") + "&saved=TRUE";
-        }
         var btnSave = document.getElementById("save");
-        getJadwalByTeamId();
+        if (isFromSaved) {
+          document.getElementById("kembali").href = "./#saved";
+          // Hide fab jika dimuat dari indexed db
+          btnSave.style.display = "none";
+
+          // ambil artikel lalu tampilkan
+          getSavedTeamById();
+        } else {
+          document.getElementById("kembali").href = "./";
+          var item = getJadwalById();
+        }
+        btnSave.onclick = function () {
+          console.log("Tombol FAB di klik.");
+          item.then(function (jadwal) {
+            saveNobar(jadwal);
+          });
+        };
       });
     </script>
   </body>

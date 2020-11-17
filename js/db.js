@@ -1,11 +1,11 @@
-var dbPromised = idb.open("football-app", 2, function(upgradeDb) {
+var dbPromised = idb.open("football-app", 3, function(upgradeDb) {
   var teamsObjectStore = upgradeDb.createObjectStore("teams", {
       keyPath: "id"
   });
   teamsObjectStore.createIndex("name", "name", { unique: false });
 
   var jadwalObjectStore = upgradeDb.createObjectStore("jadwals",{
-    keyPath: "id"
+    keyPath: "match.utcDate"
   });
   jadwalObjectStore.createIndex("utcDate", "utcDate", { unique: false });
 });
