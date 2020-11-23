@@ -3,7 +3,7 @@
     "gcm_sender_id": "244055363310",
     "short_name": "EPL PWA",
     "description": "Aplikasi PWA English Premiere League",
-    "start_url": "/index.html",
+    "start_url": "/",
     "display": "standalone",
     "background_color": "#00897B",
     "theme_color": "#3949AB",
