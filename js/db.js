@@ -16,12 +16,23 @@ dbPromised
     var tx = db.transaction("teams", "readwrite");
     var store = tx.objectStore("teams");
     console.log(team);
-    store.add(team);
+    store.put(team);
     return tx.complete;
     })
     .then(function() {
     console.log("Team berhasil di simpan ke favorit.");
     });
+}
+
+function deleteFavTeam(team) {
+  dbPromised.then(function(db) {
+    var tx = db.transaction('teams', 'readwrite');
+    var store = tx.objectStore('teams');
+    store.delete(team.id);
+    return tx.complete;
+  }).then(function() {
+    console.log('Team deleted');
+  });
 }
 
 function saveNobar(jadwal) {
@@ -30,12 +41,23 @@ function saveNobar(jadwal) {
       var tx = db.transaction("jadwals", "readwrite");
       var store = tx.objectStore("jadwals");
       console.log(jadwal);
-      store.add(jadwal);
+      store.put(jadwal);
       return tx.complete;
       })
       .then(function() {
       console.log("Jadwal Nobar telah ditambahkan.");
       });
+  }
+
+  function deleteNobar(jadwal) {
+    dbPromised.then(function(db) {
+      var tx = db.transaction('jadwals', 'readwrite');
+      var store = tx.objectStore('jadwals');
+      store.delete(jadwal.match.id);
+      return tx.complete;
+    }).then(function() {
+      console.log('Nobar deleted');
+    });
   }
 
 

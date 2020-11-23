@@ -36,6 +36,9 @@
       <a class="btn-floating btn-large red" id="save">
         <i class="large material-icons">save</i>
       </a>
+      <a class="btn-floating btn-large red" id="delete">
+        <i class="large material-icons">delete</i>
+      </a>
     </div>
     <script
       type="text/javascript"
@@ -45,43 +48,35 @@
     <script src="js/api.js"></script>
     <script src="js/idb.js"></script>
     <script src="js/db.js"></script>
+    <script src="js/register.js"></script>
     <script>
-      // REGISTER SERVICE WORKER
-      if ("serviceWorker" in navigator) {
-        window.addEventListener("load", function () {
-          navigator.serviceWorker
-            .register("/service-worker.js")
-            .then(function () {
-              console.log("Pendaftaran ServiceWorker berhasil");
-            })
-            .catch(function () {
-              console.log("Pendaftaran ServiceWorker gagal");
-            });
-        });
-      } else {
-        console.log("ServiceWorker belum didukung browser ini.");
-      }
-
-      document.addEventListener("DOMContentLoaded", function () {
+      document.addEventListener("DOMContentLoaded", () => {
         var urlParams = new URLSearchParams(window.location.search);
         var isFromSaved = urlParams.get("saved");
         var btnSave = document.getElementById("save");
+        var btnDelete = document.getElementById("delete");
         if (isFromSaved) {
           document.getElementById("kembali").href = "./#saved";
           // Hide fab jika dimuat dari indexed db
           btnSave.style.display = "none";
 
           // ambil artikel lalu tampilkan
-          getSavedTeamById();
+          var item = getSavedTeamById();
         } else {
+          btnDelete.style.display = "none";
           document.getElementById("kembali").href = "./";
           var item = getTeamById();
         }
         btnSave.onclick = function () {
-          console.log("Tombol FAB di klik.");
+          console.log("Tombol Save di klik.");
           item.then(function (team) {
             saveForLater(team);
-            sendNotif(`${team.name} berhasil menjadi tim favorit anda!`);
+          });
+        };
+        btnDelete.onclick = function () {
+          console.log("Tombol Delete di klik.");
+          item.then(function (team) {
+            deleteFavTeam(team);
           });
         };
       });

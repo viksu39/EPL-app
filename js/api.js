@@ -31,7 +31,7 @@ function getKlasemen() {
                       <div class="card">
                         <a href="./informasi.html?id=${standing.team.id}">
                           <div class="card-image waves-effect waves-block waves-light">
-                            <img src="${standing.team.crestUrl}" class="responsive-img"/>
+                            <img src="${standing.team.crestUrl}" class="responsive-img" alt="crest ${standing.team.name}"/>
                           </div>
                         </a>
                         <div class="card-content">
@@ -62,7 +62,7 @@ function getKlasemen() {
             <div class="card">
                 <a href="./informasi.html?id=${standing.team.id}">
                   <div class="card-image waves-effect waves-block waves-light">
-                    <img src="${standing.team.crestUrl}" class="responsive-img" />
+                    <img src="${standing.team.crestUrl}" class="responsive-img" alt="crest ${standing.team.name}" />
                   </div>
                 </a>
                 <div class="card-content">
@@ -92,7 +92,7 @@ function getTeamById() {
             var teamHTML = `
               <div class="card">
                 <div class="card-image waves-effect waves-block waves-light">
-                  <img src="${data.crestUrl}" class="responsive-img" />
+                  <img src="${data.crestUrl}" class="responsive-img" alt="crest ${data.name}" />
                 </div>
                 <div class="card-content">
                   <span class="card-title activator">${data.name}<i class="material-icons right">more_vert</i></span>
@@ -150,7 +150,7 @@ function getTeamById() {
         var teamHTML = `
               <div class="card">
                 <div class="card-image waves-effect waves-block waves-light">
-                  <img src="${data.crestUrl}" class="responsive-img" />
+                  <img src="${data.crestUrl}" class="responsive-img" alt="crest ${data.name}"/>
                 </div>
                 <div class="card-content">
                   <span class="card-title activator">${data.name}<i class="material-icons right">more_vert</i></span>
@@ -450,7 +450,7 @@ function getSavedTeams() {
                 <div class="card">
                   <a href="./informasi.html?id=${team.id}&saved=TRUE">
                     <div class="card-image waves-effect waves-block waves-light">
-                      <img src="${team.crestUrl}" class="responsive-img"/>
+                      <img src="${team.crestUrl}" class="responsive-img" alt="crest ${team.name}"/>
                     </div>
                   </a>
                   <div class="card-content">
@@ -506,116 +506,122 @@ function getSavedJadwals() {
 }
 
 function getSavedJadwalById() {
-  var urlParams = new URLSearchParams(window.location.search);
-  var idParam = urlParams.get("id");
-  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
-  
-  getNobarById(idParam).then(function(jadwal) {
-    var jadwalID = new Date(jadwal.match.utcDate);
-            var jadwalHTML = `
-            <div class="card">
-            <div class="card-content teal">
-              <span class="card-title truncate white-text"><b>${jadwal.match.competition.name}</b></span>
-            </div>
-            <div class="card-content">
-                <table>
-                <tr>
-                  <td style="text-align:center" colspan="2">${jadwal.match.stage} ${jadwal.match.group}</td>
-                </tr>
-                <tr>
-                  <td style="text-align:center;">HOME</td>
-                  <td style="text-align:center;">AWAY</td>
-                </tr>
-                <tr>
-                  <td style="text-align:center;">${jadwal.match.homeTeam.name}</td>
-                  <td style="text-align:center;">${jadwal.match.awayTeam.name}</td>
-                </tr>
-                <tr>
-                  <td style="text-align:center" colspan="2">${jadwalID.toLocaleDateString('id-ID',options)} WIB</td>
-                </tr>
-                </table>
-              </div>
-            </div>
-            <div class="card">
+  return new Promise(function(resolve, reject){
+    var urlParams = new URLSearchParams(window.location.search);
+    var idParam = urlParams.get("id");
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+    
+    getNobarById(idParam).then(function(jadwal) {
+      var jadwalID = new Date(jadwal.match.utcDate);
+              var jadwalHTML = `
+              <div class="card">
               <div class="card-content teal">
-                <span class="card-title truncate white-text"><b>Head To Head</b></span>
+                <span class="card-title truncate white-text"><b>${jadwal.match.competition.name}</b></span>
               </div>
               <div class="card-content">
-                <table>
+                  <table>
                   <tr>
-                    <th colspan="4">Jumlah Tanding: ${jadwal.head2head.numberOfMatches}</th>
+                    <td style="text-align:center" colspan="2">${jadwal.match.stage} ${jadwal.match.group}</td>
                   </tr>
                   <tr>
-                    <th colspan="4">Jumlah Goal: ${jadwal.head2head.totalGoals}</th>
+                    <td style="text-align:center;">HOME</td>
+                    <td style="text-align:center;">AWAY</td>
                   </tr>
                   <tr>
-                    <th>Team</th><th>Menang</th><th>Seri</th><th>Kalah</th>
+                    <td style="text-align:center;">${jadwal.match.homeTeam.name}</td>
+                    <td style="text-align:center;">${jadwal.match.awayTeam.name}</td>
                   </tr>
                   <tr>
-                    <td>${jadwal.head2head.homeTeam.name}</td>
-                    <td>${jadwal.head2head.homeTeam.wins}</td>
-                    <td>${jadwal.head2head.homeTeam.draws}</td>
-                    <td>${jadwal.head2head.homeTeam.losses}</td>
+                    <td style="text-align:center" colspan="2">${jadwalID.toLocaleDateString('id-ID',options)} WIB</td>
                   </tr>
-                  <tr>
-                    <td>${jadwal.head2head.awayTeam.name}</td>
-                    <td>${jadwal.head2head.awayTeam.wins}</td>
-                    <td>${jadwal.head2head.awayTeam.draws}</td>
-                    <td>${jadwal.head2head.awayTeam.losses}</td>
-                  </tr>
-                </table>
+                  </table>
+                </div>
               </div>
-            </div>
-            `;
-    // Sisipkan komponen card ke dalam elemen dengan id #content
-    document.getElementById("body-content").innerHTML = jadwalHTML;
+              <div class="card">
+                <div class="card-content teal">
+                  <span class="card-title truncate white-text"><b>Head To Head</b></span>
+                </div>
+                <div class="card-content">
+                  <table>
+                    <tr>
+                      <th colspan="4">Jumlah Tanding: ${jadwal.head2head.numberOfMatches}</th>
+                    </tr>
+                    <tr>
+                      <th colspan="4">Jumlah Goal: ${jadwal.head2head.totalGoals}</th>
+                    </tr>
+                    <tr>
+                      <th>Team</th><th>Menang</th><th>Seri</th><th>Kalah</th>
+                    </tr>
+                    <tr>
+                      <td>${jadwal.head2head.homeTeam.name}</td>
+                      <td>${jadwal.head2head.homeTeam.wins}</td>
+                      <td>${jadwal.head2head.homeTeam.draws}</td>
+                      <td>${jadwal.head2head.homeTeam.losses}</td>
+                    </tr>
+                    <tr>
+                      <td>${jadwal.head2head.awayTeam.name}</td>
+                      <td>${jadwal.head2head.awayTeam.wins}</td>
+                      <td>${jadwal.head2head.awayTeam.draws}</td>
+                      <td>${jadwal.head2head.awayTeam.losses}</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              `;
+      // Sisipkan komponen card ke dalam elemen dengan id #content
+      document.getElementById("body-content").innerHTML = jadwalHTML;
+      resolve(jadwal);
+    });
   });
 }
 
 function getSavedTeamById() {
-  var urlParams = new URLSearchParams(window.location.search);
-  var idParam = urlParams.get("id");
-  
-  getById(idParam).then(function(team) {
-    var teamHTML = `
-              <div class="card">
-                <div class="card-image waves-effect waves-block waves-light">
-                  <img src="${team.crestUrl}" class="responsive-img" />
-                </div>
-                <div class="card-content">
-                  <span class="card-title activator">${team.name}<i class="material-icons right">more_vert</i></span>
-                  <ul>
-                    <li>Berdiri Sejak: ${team.founded}</li>
-                    <li>Alamat: ${team.address}</li>
-                    <li>Telepon: ${team.phone}</li>
-                    <li>Website: ${team.website}</li>
-                  </ul>
-                  `;
+  return new Promise(function(resolve, reject){
+    var urlParams = new URLSearchParams(window.location.search);
+    var idParam = urlParams.get("id");
+    
+    getById(idParam).then(function(team) {
+      var teamHTML = `
+                <div class="card">
+                  <div class="card-image waves-effect waves-block waves-light">
+                    <img src="${team.crestUrl}" class="responsive-img" alt="crest ${team.name}"/>
+                  </div>
+                  <div class="card-content">
+                    <span class="card-title activator">${team.name}<i class="material-icons right">more_vert</i></span>
+                    <ul>
+                      <li>Berdiri Sejak: ${team.founded}</li>
+                      <li>Alamat: ${team.address}</li>
+                      <li>Telepon: ${team.phone}</li>
+                      <li>Website: ${team.website}</li>
+                    </ul>
+                    `;
 
-            var comtetitionHTML = `<div class="card-reveal">
-                <span class="card-title grey-text text-darken-4">Kompetisi yang diikuti<i class="material-icons right">close</i></span>
-                <p>Berikut adalah daftar kompetisi yang sedang diikuti ${team.name}:</p>
-                <ol>
-            `;
-
-            team.activeCompetitions.forEach(function(competition){
-              comtetitionHTML = comtetitionHTML + `
-                  <li>${competition.name}</li>
+              var comtetitionHTML = `<div class="card-reveal">
+                  <span class="card-title grey-text text-darken-4">Kompetisi yang diikuti<i class="material-icons right">close</i></span>
+                  <p>Berikut adalah daftar kompetisi yang sedang diikuti ${team.name}:</p>
+                  <ol>
               `;
-            });
 
-            comtetitionHTML = comtetitionHTML + `
-              </ol>
-              </div>
-            `;
+              team.activeCompetitions.forEach(function(competition){
+                comtetitionHTML = comtetitionHTML + `
+                    <li>${competition.name}</li>
+                `;
+              });
 
-            teamHTML = teamHTML + `</div>` + comtetitionHTML + `
-                <div class="card-action">
-                  <a href="./jadwal.html?id=${idParam}&saved=true">Info Jadwal</a>
+              comtetitionHTML = comtetitionHTML + `
+                </ol>
                 </div>
-              </div>
-            `;
-    // Sisipkan komponen card ke dalam elemen dengan id #content
-    document.getElementById("body-content").innerHTML = teamHTML;
+              `;
+
+              teamHTML = teamHTML + `</div>` + comtetitionHTML + `
+                  <div class="card-action">
+                    <a href="./jadwal.html?id=${idParam}&saved=true">Info Jadwal</a>
+                  </div>
+                </div>
+              `;
+      // Sisipkan komponen card ke dalam elemen dengan id #content
+      document.getElementById("body-content").innerHTML = teamHTML;
+      resolve(team);
+    });
   });
 }
